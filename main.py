@@ -7,30 +7,32 @@ from pydantic import BaseModel
 import requests
 
 app = FastAPI()
-
 app.mount("/static", StaticFiles(directory="static"),name="static")
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/items/{id}", response_class=HTMLResponse)
-async def read_thing(request: Request, id: str):
-    return templates.TemplateResponse("form.html", {"request": request, "id": id})
+class Data(BaseModel):
+    link: str
+    text: str
+    tag: str
 
-class Item(BaseModel):
-    qurl: str
-    qstring: str
+
+@app.get("/form")
+async def form_post(request: Request):
+    result= ""
+    return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
+
+@app.post("/form")
+async def form_post(request: Request, item: Data,  site: str = Form(...), qstring: str = Form(...)):
+    item.link = site
+    item.text = qstring
+    # return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
+    return item
 
 @app.get('/')
 def read_root():
     return {"message":"Hello World"}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-        return {"item_id": item_id, "q":q}
 
-@app.post("/scrape/")
-def scrape(item: Item):
-    return item
-
-@app.put("/items/{item_id}")
-def update_item(item_id: int, item: Item):
-    return {"item_name": item.name, "item_id": item_id}
+# @app.post("/scrape/")
+# def scrape(item: Item):
+#     return item

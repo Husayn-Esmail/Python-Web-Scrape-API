@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Web Scraping HTML API </title>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', path='/stylehseet.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', path='/stylesheet.css') }}">
   </head>
   <body>
     <h1>Item ID: {{ id }}</h1>
@@ -20,6 +20,7 @@
       <!-- submit button -->
       <input type="submit">
       <p>Result : {{ result }}</p>
+      <p> newresult: {{ new_result }} </p>
     </form>
   </body>
 </html>
