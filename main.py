@@ -1,4 +1,5 @@
 from typing import Optional
+from fastapi.respones import HTMLResponse
 from fastapi import FastAPI, Form
 from pydantic import BaseModel
 import requests
@@ -9,6 +10,10 @@ app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"),name="static")
 templates = Jinja2Templates(directory="templates")
+
+@app.get("/items/{id}", response_class=HTMLResponse)
+async def read_thing(request: Request, id: str):
+    return templates.TemplateResponse("form.html", {"request": request, "id": id})
 
 class Item(BaseModel):
     qurl: str
