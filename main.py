@@ -1,10 +1,10 @@
+from fastapi import FastAPI, Form, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 from typing import Optional
-from fastapi.respones import HTMLResponse
-from fastapi import FastAPI, Form
 from pydantic import BaseModel
 import requests
-from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
