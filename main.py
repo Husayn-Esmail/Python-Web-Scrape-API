@@ -8,9 +8,9 @@ from pydantic import BaseModel
 # requests for handling get and post
 import requests
 
+
 from db import crud, models, schemas
-
-
+from db.database import engine
 
 models.Base.metadata.create_all(bind=engine)
 

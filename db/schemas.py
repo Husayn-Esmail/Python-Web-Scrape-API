@@ -1,5 +1,9 @@
 from pydantic import BaseModel
 
+# the base model is designed like this because the intention is to add to the database
+# once the query has been completed (at the end of the process). Therefore all 
+# information should be known at the time of adding the query to the database
+# and there should be no extra information required. 
 # the base model for a previous query
 class PrevQueryBase(BaseModel):
     '''
