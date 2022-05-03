@@ -14,6 +14,15 @@ from db.database import engine
 
 models.Base.metadata.create_all(bind=engine)
 
+# dependency
+def get_db():
+    # this allows main to access database 
+    # this should allow me to connect front end to database.
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # this is handling the static files (like css)
 app = FastAPI()
@@ -21,32 +30,23 @@ app.mount("/static", StaticFiles(directory="static"),name="static")
 # this tells fastapi where to find templates
 templates = Jinja2Templates(directory="templates")
 
-# this is an object representing what I want to store in the database
-class Data(BaseModel):
-    link: str
-    text: str
-    tag: str
-
-# this will serve my form template at the specified path
-@app.get("/form")
-async def form_post(request: Request):
-    result= ""
-    return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
-
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form")
-async def form_post(request: Request, item: Data,  site: str = Form(...), qstring: str = Form(...)):
-    item.link = site
-    item.text = qstring
-    return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
-    # return item
+async def form_post(request: Request,  site: str = Form(...), qstring: str = Form(...), btn: str = Form(...)):
+    if btn == "submit":
+        result = {"site": site, "qstring": qstring}
+        print(result)
+    # return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
+    return ""
+
+
+# this will serve my form template at the specified path
+@app.get("/form", response_class=HTMLResponse)
+def form_post(request: Request):
+    return templates.TemplateResponse('form.html', context={'request': request})
+
 
 # serves a page at the root directory. doesn't do anything right now
 @app.get('/')
 def read_root():
     return {"message":"Hello World"}
-
-
-# @app.post("/scrape/")
-# def scrape(item: Item):
-#     return item

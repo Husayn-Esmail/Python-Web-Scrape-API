@@ -7,7 +7,7 @@
   <body>
     <div class="content">
       <h1>Search for an HTML tag in a website</h1>
-      <form class="input">
+      <form class="input" method="POST">
         <div class="row">
           <div class="col">
             <!-- input number 1 -->
@@ -20,7 +20,7 @@
         </div>
         <!-- submit button -->
         <div class="button">
-          <input type="submit">
+          <input type="submit" value="submit">
         </div>
         <p>HTMLTAG (last occurrence): {{ result }}</p>
       </form>
