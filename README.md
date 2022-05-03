@@ -8,3 +8,10 @@ matching element, then teh last element should be returned from the API.
 This API is written in python and has been written by Husayn Esmail.
 
 The due date for this project is May 11, 2022. 
+
+
+To start the virtual environment:
+source pyapi/bin/activate
+
+To leave the virtual environment: 
+deactivate
