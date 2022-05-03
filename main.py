@@ -1,5 +1,5 @@
 # fast api things
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -7,19 +7,13 @@ from typing import Optional
 from pydantic import BaseModel
 # requests for handling get and post
 import requests
-# database things
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
-# This is connecting the database I think
-SQLALCHEMY_DATABASE_URL = "sqlite:///./db/tagselector.db"
+from db import crud, models, schemas
 
-engine = create_engine (
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread":False}
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+
+
+models.Base.metadata.create_all(bind=engine)
+
 
 # this is handling the static files (like css)
 app = FastAPI()

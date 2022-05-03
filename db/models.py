@@ -1,10 +1,13 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, string
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from .database import Base
-class Prev_Query(Base):
-    __tablename__ = "prev_queries"
-    link = Column(String)
-    qstring = Column(String, unique=True)
+
+class PrevQuery(Base):
+    # name of the table to use
+    __tablename__ = "queries"
+    # columns in the database table
+    link = Column(String, index=True)
+    qstring = Column(String, primary_key=True, unique=True, index=True)
     tag = Column(String)
 
