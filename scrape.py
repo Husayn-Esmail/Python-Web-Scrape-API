@@ -1,11 +1,11 @@
 import requests
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 # [TODO]
 # optimize this code and clean it up
 # ensure it does't use two while loops
 # the webpage that I'm scraping at the moment (converted to text)
 r = requests.get('https://www.studytonight.com/python/web-scraping/find-tags-with-beautifulsoup').text
-soup = BeautifulSoup(r, 'html.parser')
+# soup = BeautifulSoup(r, 'html.parser')
 
 # finds the last occurrence of the string starting with the first character.
 # checks the original string in lowercase against the desired string in lowercase.
