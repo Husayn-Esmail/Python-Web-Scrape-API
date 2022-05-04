@@ -31,6 +31,18 @@ app.mount("/static", StaticFiles(directory="static"),name="static")
 templates = Jinja2Templates(directory="templates")
 
 
+# function to query database
+def query_db(link, string):
+    pass
+
+# function to search for the given string
+def find_string(link, string):
+    pass
+
+# function to store previous queries in the database
+def write_to_db(link, string, tag):
+    pass
+
 # These two routes serve output and accept input.
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form")
