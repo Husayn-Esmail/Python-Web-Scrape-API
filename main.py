@@ -30,11 +30,14 @@ app.mount("/static", StaticFiles(directory="static"),name="static")
 # this tells fastapi where to find templates
 templates = Jinja2Templates(directory="templates")
 
+
+# These two routes serve output and accept input.
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form")
 async def form_post(request: Request,  site: str = Form(...), qstring: str = Form(...)):
+    # this is where I build functionality to return the correct data.
     result = site+qstring
-    print(result)
+    # this returns the new value of result to the end user.
     return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
 
 # this will serve my form template at the specified path
@@ -45,5 +48,5 @@ def form_post(request: Request):
 
 # serves a page at the root directory. doesn't do anything right now
 @app.get('/')
-def read_root():
-    return {"message":"Hello World"}
+def read_root(request:Request):
+    return templates.TemplateResponse("landing.html", context={'request':request})
