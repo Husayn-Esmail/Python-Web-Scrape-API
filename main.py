@@ -32,13 +32,10 @@ templates = Jinja2Templates(directory="templates")
 
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form")
-async def form_post(request: Request,  site: str = Form(...), qstring: str = Form(...), btn: str = Form(...)):
-    if btn == "submit":
-        result = {"site": site, "qstring": qstring}
-        print(result)
-    # return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
-    return ""
-
+async def form_post(request: Request,  site: str = Form(...), qstring: str = Form(...)):
+    result = site+qstring
+    print(result)
+    return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
 
 # this will serve my form template at the specified path
 @app.get("/form", response_class=HTMLResponse)
