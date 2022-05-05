@@ -2,11 +2,7 @@ from pydantic import BaseModel
 from fastapi import Form
 from typing import Type, Optional
 import inspect
-# from pydantic.fields import ModelField
-# the base model is designed like this because the intention is to add to the database
-# once the query has been completed (at the end of the process). Therefore all 
-# information should be known at the time of adding the query to the database
-# and there should be no extra information required. 
+
 # the base model for a previous query
 class PrevQueryBase(BaseModel):
     '''
@@ -23,10 +19,15 @@ class PrevQueryBase(BaseModel):
 class PrevQueryCreate(PrevQueryBase):
     link: str
     qstring: str
-    tag: Optional[str] = None
+    tag: Optional[str] = None # optional because it will be added later.
 
 
 # everything required for the PrevQuery object is required in the base and thus inherited
+# the only reason this works with the form is because the name of the form is the same
+# as the labels in here. Everything has to be consistent
+# note this code is not mine. it's from a stack overflow post which I read but didn't
+# manage to get working without this video. He also mentions the stack overflow post
+# video link: https://www.youtube.com/watch?v=L4WBFRQB7Lk
 class PrevQuery(PrevQueryBase):
     link: str
     qstring: str
