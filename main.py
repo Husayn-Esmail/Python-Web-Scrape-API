@@ -48,12 +48,12 @@ def write_to_db(link, string, tag):
 @app.post("/form", response_model=schemas.PrevQuery)
 def form_post(
     request: Request, 
-    prev_query: schemas.PrevQueryCreate,  
-    db: _orm.Session=fastapi.Depends(services.get_db), site=Form(...), search=Form(...)):
+    prev_query: schemas.PrevQueryCreate = fastapi.Depends(schemas.as_form),  
+    db: _orm.Session=fastapi.Depends(services.get_db)):
     # Empty by default
     result = ""
-    prev_query.link = site
-    prev_query.qstring = search
+    # prev_query.link = site
+    # prev_query.qstring = search
     # note this will always return false while I'm working on the database part. 
     q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
     print(q)
