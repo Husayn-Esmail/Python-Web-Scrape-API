@@ -9,6 +9,6 @@ class PrevQuery(Base):
     # columns in the database table
     link = Column(String, index=True)
     qstring = Column(String, primary_key=True, index=True)
-    tag = Column(String, index=True)
+    tag = Column(String, index=True, default="")
 
 

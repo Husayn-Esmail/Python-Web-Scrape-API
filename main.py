@@ -6,40 +6,25 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 # requests for handling get and post
 import requests
+import sqlalchemy.orm
+import services
+from db import schemas
 
-
-from db import crud, models, schemas
-from db.database import engine
-
-models.Base.metadata.create_all(bind=engine)
-
-# dependency
-def get_db():
-    # this allows main to access database 
-    # this should allow me to connect front end to database.
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # this is handling the static files (like css)
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"),name="static")
 # this tells fastapi where to find templates
 templates = Jinja2Templates(directory="templates")
-
-
-# function to query database
-def query_db(link, string):
-    return False
+# create the database
+services.create_database()
 
 # function to search for the given string, returns the html element (string)
 def find_string(link, string):
     # preliminary work
     html_string = requests.get(link).text
     # start the search
-    occurence_index = html_string.lower().rfind(string)
+    occurence_index = html_string.lower().rfind(string.lower())
     start_index = occurence_index
     end_index = occurence_index
     start = html_string[start_index]
@@ -57,11 +42,14 @@ def find_string(link, string):
 def write_to_db(link, string, tag):
     pass
 
-class creatquery():
-    def __init__(self, site, qstring, result):
-        self.site = site
-        self.qstring = qstring
-        self.result = result
+
+# @app.post("/form", response_model=schemas.PrevQuery)
+# def get_query(prev_query: schemas.PrevQueryCreate, db: sqlalchemy.orm.Session=Depends(services.get_db)):
+#     db_query = services.get_query_by_link(db=db, link=prev_query.link)
+    # if db_query:
+    #     return services.get_tag(db=db, link=prev_query.link, qstring=prev_query.qstring)
+    # else:
+    #     return services.create_prev_query(db=db, prev_query=prev_query)
 
 
 # These two routes serve output and accept input.

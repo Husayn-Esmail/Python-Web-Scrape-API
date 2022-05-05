@@ -18,7 +18,6 @@ class PrevQueryBase(BaseModel):
     '''
     link: str
     qstring: str
-    tag: str
 
 # Everything required to create a previous query comes from the PrevQueryBase class
 class PrevQueryCreate(PrevQueryBase):
@@ -26,4 +25,6 @@ class PrevQueryCreate(PrevQueryBase):
 
 # everything required for the PrevQuery object is required in the base and thus inherited
 class PrevQuery(PrevQueryBase):
-    pass
+    link: str
+    qstring: str
+    tag: str
