@@ -37,6 +37,7 @@ def find_string(link, string):
     while (end != ">"):
         end_index += 1
         end = html_string[end_index]
+    print("string: " [start_index:end_index+1])
     return html_string[start_index:end_index+1]
 
 # function to store previous queries in the database
@@ -48,19 +49,23 @@ def write_to_db(link, string, tag):
 @app.post("/form", response_model=schemas.PrevQuery)
 def form_post(
     request: Request,  
-    db: _orm.Session=fastapi.Depends(services.get_db),
-    site: str = Form(...),
-    content: str = Form(...)):
+    prev_query: schemas.PrevQuery,
+    db: _orm.Session=fastapi.Depends(services.get_db)):
     # Empty by default
     result = ""
-    prev_query = schemas.PrevQueryCreate(link=site, qstring=content,tag="")
     # note this will always return false while I'm working on the database part. 
     q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
-    print(q)
-    if prev_query is None:
-        result = find_string(site, qstring)
-    # handles the case where the queried string is not found.
-    result = "Not found" if result == "" else result
+    print("full query: ", prev_query)
+    print("query: ", q)
+    print("Prevquery.link: ", prev_query.link)
+    print("prevQuery.string: ", prev_query.qstring)
+    if q == []:
+        result = find_string(prev_query.link, prev_query.qstring)
+        # handles the case where the queried string is not found.
+        result = "Not found" if result == "" else result
+        prev_query.tag = result
+        x = services.create_prev_query(db=db, prev_query=prev_query)
+    
 
     # somewhere in this void, the database needs to be accessed and needs to write the result of the query. 
 

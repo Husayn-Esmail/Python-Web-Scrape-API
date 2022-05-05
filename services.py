@@ -21,7 +21,7 @@ def get_queries_by_qstring(db: _orm.Session, qstring: str):
 
 # gets all queries with the same link
 def get_queries_by_link(db: _orm.Session, link: str):
-    return db.query(models.PrevQuery).filter(models.PrevQuery.link == link)
+    return db.query(models.PrevQuery).filter(models.PrevQuery.link == link).all()
 
 # this is supposed to get the tag based on link and qstring
 def get_tag(db: _orm.Session, link: str, qstring: str):

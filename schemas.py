@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 from fastapi import Form
-from typing import Type
+from typing import Type, Optional
 import inspect
-from pydantic.fields import ModelField
+# from pydantic.fields import ModelField
 # the base model is designed like this because the intention is to add to the database
 # once the query has been completed (at the end of the process). Therefore all 
 # information should be known at the time of adding the query to the database
@@ -21,19 +21,13 @@ class PrevQueryBase(BaseModel):
 
 # Everything required to create a previous query comes from the PrevQueryBase class
 class PrevQueryCreate(PrevQueryBase):
-    pass
+    link: str
+    qstring: str
+    tag: Optional[str] = None
 
 
 # everything required for the PrevQuery object is required in the base and thus inherited
 class PrevQuery(PrevQueryBase):
     link: str
     qstring: str
-    tag: str
-
-    # @classmethod
-    # def as_form(
-    #     cls,
-    #     link: str = Form(...),
-    #     qstring: str = Form(...)
-    # ) -> PrevQuery:
-    #     return cls(link=link, qstring=qstring)
+    tag: Optional[str] = None
