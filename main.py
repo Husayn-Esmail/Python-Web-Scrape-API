@@ -34,12 +34,12 @@ templates = Jinja2Templates(directory="templates")
 def query_db(link, string):
     return False
 
-# function to search for the given string
+# function to search for the given string, returns the html element (string)
 def find_string(link, string):
     # preliminary work
-    html_string = request.get(link).text
+    html_string = requests.get(link).text
     # start the search
-    occurence_index = r.lower().rfind(string)
+    occurence_index = html_string.lower().rfind(string)
     start_index = occurence_index
     end_index = occurence_index
     start = html_string[start_index]
@@ -68,7 +68,6 @@ async def form_post(request: Request,  site: str = Form(...), qstring: str = For
     in_db = query_db(site, qstring)
     if (not in_db):
         result = find_string(site, qstring)
-
     # this returns the new value of result to the end user.
     return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
 
