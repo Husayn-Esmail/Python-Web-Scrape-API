@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 # requests for handling get and post
 import requests
-import sqlalchemy.orm
+import sqlalchemy.orm as _orm
 import services
 from db import schemas
 
@@ -54,12 +54,12 @@ def write_to_db(link, string, tag):
 
 # These two routes serve output and accept input.
 # this is supposed to handle form submissions but at the moment is not working
-@app.post("/form")
-async def form_post(request: Request,  site: str = Form(...), qstring: str = Form(...)):
+@app.post("/form", response_model=schemas.PrevQuery)
+async def form_post(request: Request, prev_query: schemas.PrevQueryCreate, db:_orm.Session=Depends(services.get_db)):
     # Empty by default
     result = ""
     # note this will always return false while I'm working on the database part. 
-    in_db = query_db(site, qstring)
+
     if (not in_db):
         result = find_string(site, qstring)
     # handles the case where the queried string is not found.
@@ -80,7 +80,7 @@ def form_post(request: Request):
     return templates.TemplateResponse('form.html', context={'request': request})
 
 
-# serves a page at the root directory. doesn't do anything right now
-@app.get('/')
-def read_root(request:Request):
-    return templates.TemplateResponse("landing.html", context={'request':request})
+# temporariliy commented out
+# @app.get('/')
+# def read_root(request:Request):
+#     return templates.TemplateResponse("landing.html", context={'request':request})
