@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # this connects the database
-SQLALCHEMY_DATABASE_URL = "sqlite:///./tagselector.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./tagselect.db"
 
 engine = create_engine (
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread":False}
