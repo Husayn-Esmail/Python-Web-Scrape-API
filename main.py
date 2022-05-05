@@ -52,8 +52,6 @@ def form_post(
     request: Request,  
     prev_query: schemas.PrevQuery = fastapi.Depends(schemas.PrevQuery.as_form),
     db: _orm.Session=fastapi.Depends(services.get_db)):
-
-    print(prev_query)
     # Empty by default
     result = ""
     # note this will always return false while I'm working on the database part. 
