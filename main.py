@@ -9,7 +9,7 @@ from pydantic import BaseModel
 import requests
 import sqlalchemy.orm as _orm
 import services
-import schemas, models
+import schemas
 
 # this is handling the static files (like css)
 
@@ -46,15 +46,19 @@ def write_to_db(link, string, tag):
 
 # These two routes serve output and accept input.
 # this is supposed to handle form submissions but at the moment is not working
+# functionality so far is working with the docs link just not with the form. 
 @app.post("/form", response_model=schemas.PrevQuery)
 def form_post(
     request: Request,  
-    prev_query: schemas.PrevQuery,
+    prev_query: schemas.PrevQuery = fastapi.Depends(schemas.PrevQuery.as_form),
     db: _orm.Session=fastapi.Depends(services.get_db)):
+
+    print(prev_query)
     # Empty by default
     result = ""
     # note this will always return false while I'm working on the database part. 
     q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
+    # DEBUG PRINT STATEMENTS
     print("full query: ", prev_query)
     print("query: ", q)
     print("Prevquery.link: ", prev_query.link)
@@ -65,13 +69,14 @@ def form_post(
         # handles the case where the queried string is not found.
         result = "Not found" if result == "" else result
         prev_query.tag = result
+        print("I'm running again")
         x = services.create_prev_query(db=db, prev_query=prev_query)
     
     # this will return a tag from the database if the query returned a non-empty list
     for que in q:
         if (que.link == prev_query.link and que.qstring == prev_query.qstring):
             result = que.tag
-
+    # still need to handle the case where the link is the same but the qstring isn't
 
 
     # this returns the new value of result to the end user.
@@ -84,7 +89,7 @@ def form_post(request: Request):
     return templates.TemplateResponse('form.html', context={'request': request})
 
 
-# temporariliy commented out
+# temporarily commented out
 # @app.get('/')
 # def read_root(request:Request):
 #     return templates.TemplateResponse("landing.html", context={'request':request})

@@ -27,6 +27,7 @@ def get_queries_by_link(db: _orm.Session, link: str):
 def get_tag(db: _orm.Session, link: str, qstring: str):
     return db.query(models.PrevQuery).filter(models.PrevQuery.tag).first()
 
+# adds a previous query to the database
 def create_prev_query(db: _orm.Session, prev_query: schemas.PrevQueryCreate):
     db_query = models.PrevQuery(link=prev_query.link, qstring=prev_query.qstring, tag=prev_query.tag)
     db.add(db_query)

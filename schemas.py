@@ -31,3 +31,16 @@ class PrevQuery(PrevQueryBase):
     link: str
     qstring: str
     tag: Optional[str] = None
+
+    @classmethod
+    def as_form(
+        cls,
+        link: str = Form(...),
+        qstring: str = Form(...),
+        tag: Optional[str] = None
+    ):
+        return cls(
+            link = link,
+            qstring = qstring,
+            tag = tag
+        )
