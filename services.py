@@ -15,6 +15,8 @@ def get_db():
     finally:
         db.close()
 
+
+# crud functionality is in this code
 # gets all queries with the same qstring
 def get_queries_by_qstring(db: _orm.Session, qstring: str):
     return db.query(models.PrevQuery).filter(models.PrevQuery.qstring == qstring)
