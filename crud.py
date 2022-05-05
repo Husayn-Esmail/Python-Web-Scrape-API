@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from . import models, schemas
+import models, schemas
 
 # this should get the whole PrevQuery object, or at least the minimum information
 # to identify a query.

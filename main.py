@@ -1,5 +1,6 @@
 # fast api things
-from fastapi import FastAPI, Form, Request, Depends, HTTPException
+from fastapi import FastAPI, Request, Form, HTTPException
+import fastapi
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -8,7 +9,7 @@ from pydantic import BaseModel
 import requests
 import sqlalchemy.orm as _orm
 import services
-from db import schemas
+import schemas
 
 
 # this is handling the static files (like css)
@@ -43,29 +44,21 @@ def write_to_db(link, string, tag):
     pass
 
 
-# @app.post("/form", response_model=schemas.PrevQuery)
-# def get_query(prev_query: schemas.PrevQueryCreate, db: sqlalchemy.orm.Session=Depends(services.get_db)):
-#     db_query = services.get_query_by_link(db=db, link=prev_query.link)
-    # if db_query:
-    #     return services.get_tag(db=db, link=prev_query.link, qstring=prev_query.qstring)
-    # else:
-    #     return services.create_prev_query(db=db, prev_query=prev_query)
 
 
 # These two routes serve output and accept input.
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form", response_model=schemas.PrevQuery)
-async def form_post(request: Request, prev_query: schemas.PrevQueryCreate, db:_orm.Session=Depends(services.get_db)):
+async def form_post(request: Request, prev_query: schemas.PrevQueryCreate, db: _orm.Session = fastapi.Depends(services.get_db)):
     # Empty by default
     result = ""
     # note this will always return false while I'm working on the database part. 
-
-    if (not in_db):
+    q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
+    print(q)
+    if False:
         result = find_string(site, qstring)
     # handles the case where the queried string is not found.
     result = "Not found" if result == "" else result
-    # prev_query = creatquery(site, qstring, result)
-    # crud.createPrevQuery(get_db(), prev_query)
 
     # somewhere in this void, the database needs to be accessed and needs to write the result of the query. 
 

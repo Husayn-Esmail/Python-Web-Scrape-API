@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 
-from .database import Base
+from database import Base
 
 # python representation of the database table
 class PrevQuery(Base):
