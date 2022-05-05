@@ -79,6 +79,7 @@ async def form_post(request: Request,  site: str = Form(...), qstring: str = For
 # this will serve my form template at the specified path
 @app.get("/form", response_class=HTMLResponse)
 def form_post(request: Request):
+    # returns a webpage with a form on it.
     return templates.TemplateResponse('form.html', context={'request': request})
 
 

@@ -4,7 +4,7 @@ from . import models, schemas
 # this should get the whole PrevQuery object, or at least the minimum information
 # to identify a query.
 def getPrevQuery(db: Session, link: str, qstring: str, tag: str):
-    return db.query(modles.PrevQuery).filter(models.PrevQuery.link == models.PrevQuery.qstring == qstring).first()
+    return db.query(models.PrevQuery).filter(models.PrevQuery.link == models.PrevQuery.qstring == qstring).first()
 
 # this should allow you to narrow down a query by url so that you can check qstring
 def getQueryByURL(db: Session, link: str):
