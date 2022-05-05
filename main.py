@@ -9,10 +9,10 @@ from pydantic import BaseModel
 import requests
 import sqlalchemy.orm as _orm
 import services
-import schemas
-
+import schemas, models
 
 # this is handling the static files (like css)
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"),name="static")
 # this tells fastapi where to find templates
@@ -43,17 +43,17 @@ def find_string(link, string):
 def write_to_db(link, string, tag):
     pass
 
-
-
-
 # These two routes serve output and accept input.
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form", response_model=schemas.PrevQuery)
-def form_post(request: Request, prev_query: schemas.PrevQueryCreate=fastapi.Depends(schemas.PrevQuery.as_form), db: _orm.Session=fastapi.Depends(services.get_db)):
+def form_post(
+    request: Request, 
+    prev_query: schemas.PrevQueryCreate,  
+    db: _orm.Session=fastapi.Depends(services.get_db), site=Form(...), search=Form(...)):
     # Empty by default
     result = ""
     prev_query.link = site
-    prev_query.qstring = url
+    prev_query.qstring = search
     # note this will always return false while I'm working on the database part. 
     q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
     print(q)
