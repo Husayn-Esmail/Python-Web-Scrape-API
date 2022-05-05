@@ -59,6 +59,7 @@ def form_post(
     print("query: ", q)
     print("Prevquery.link: ", prev_query.link)
     print("prevQuery.string: ", prev_query.qstring)
+    # handles the case where new 
     if q == []:
         result = find_string(prev_query.link, prev_query.qstring)
         # handles the case where the queried string is not found.
@@ -66,8 +67,11 @@ def form_post(
         prev_query.tag = result
         x = services.create_prev_query(db=db, prev_query=prev_query)
     
+    # this will return a tag from the database if the query returned a non-empty list
+    for que in q:
+        if (que.link == prev_query.link and que.qstring == prev_query.qstring):
+            result = que.tag
 
-    # somewhere in this void, the database needs to be accessed and needs to write the result of the query. 
 
 
     # this returns the new value of result to the end user.
