@@ -6,6 +6,5 @@ python-multipart
 jinja2
 
 sqlalchemy
-bs4
 requests
 
