@@ -47,17 +47,17 @@ def write_to_db(link, string, tag):
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form", response_model=schemas.PrevQuery)
 def form_post(
-    request: Request, 
-    prev_query: schemas.PrevQueryCreate = fastapi.Depends(schemas.as_form),  
-    db: _orm.Session=fastapi.Depends(services.get_db)):
+    request: Request,  
+    db: _orm.Session=fastapi.Depends(services.get_db),
+    site: str = Form(...),
+    content: str = Form(...)):
     # Empty by default
     result = ""
-    # prev_query.link = site
-    # prev_query.qstring = search
+    prev_query = schemas.PrevQueryCreate(link=site, qstring=content,tag="")
     # note this will always return false while I'm working on the database part. 
     q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
     print(q)
-    if False:
+    if prev_query is None:
         result = find_string(site, qstring)
     # handles the case where the queried string is not found.
     result = "Not found" if result == "" else result
