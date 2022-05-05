@@ -3,7 +3,6 @@ from fastapi import FastAPI, Form, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from typing import Optional
 from pydantic import BaseModel
 # requests for handling get and post
 import requests
@@ -33,11 +32,26 @@ templates = Jinja2Templates(directory="templates")
 
 # function to query database
 def query_db(link, string):
-    pass
+    return False
 
 # function to search for the given string
 def find_string(link, string):
-    pass
+    # preliminary work
+    html_string = request.get(link).text
+    # start the search
+    occurence_index = r.lower().rfind(string)
+    start_index = occurence_index
+    end_index = occurence_index
+    start = html_string[start_index]
+    end = html_string[end_index]
+    # finding the full element
+    while (start != "<"):
+        start_index -= 1
+        start = html_string[start_index]
+    while (end != ">"):
+        end_index += 1
+        end = html_string[end_index]
+    return html_string[start_index:end_index+1]
 
 # function to store previous queries in the database
 def write_to_db(link, string, tag):
@@ -48,7 +62,13 @@ def write_to_db(link, string, tag):
 @app.post("/form")
 async def form_post(request: Request,  site: str = Form(...), qstring: str = Form(...)):
     # this is where I build functionality to return the correct data.
-    result = site+qstring
+    # false by default
+    result = "Not found"
+    # note this will always return false while I'm working on the database part. 
+    in_db = query_db(site, qstring)
+    if (not in_db):
+        result = find_string(site, qstring)
+
     # this returns the new value of result to the end user.
     return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
 
