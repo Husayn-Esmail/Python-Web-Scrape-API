@@ -57,6 +57,13 @@ def find_string(link, string):
 def write_to_db(link, string, tag):
     pass
 
+class creatquery():
+    def __init__(self, site, qstring, result):
+        self.site = site
+        self.qstring = qstring
+        self.result = result
+
+
 # These two routes serve output and accept input.
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form")
@@ -69,6 +76,8 @@ async def form_post(request: Request,  site: str = Form(...), qstring: str = For
         result = find_string(site, qstring)
     # handles the case where the queried string is not found.
     result = "Not found" if result == "" else result
+    # prev_query = creatquery(site, qstring, result)
+    # crud.createPrevQuery(get_db(), prev_query)
 
     # somewhere in this void, the database needs to be accessed and needs to write the result of the query. 
 
