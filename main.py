@@ -61,13 +61,18 @@ def write_to_db(link, string, tag):
 # this is supposed to handle form submissions but at the moment is not working
 @app.post("/form")
 async def form_post(request: Request,  site: str = Form(...), qstring: str = Form(...)):
-    # this is where I build functionality to return the correct data.
-    # false by default
-    result = "Not found"
+    # Empty by default
+    result = ""
     # note this will always return false while I'm working on the database part. 
     in_db = query_db(site, qstring)
     if (not in_db):
         result = find_string(site, qstring)
+    # handles the case where the queried string is not found.
+    result = "Not found" if result == "" else result
+
+    # somewhere in this void, the database needs to be accessed and needs to write the result of the query. 
+
+
     # this returns the new value of result to the end user.
     return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
 
