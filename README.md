@@ -14,6 +14,11 @@ a file to store data because files get messy.
 
 The due date for this project is May 11, 2022. 
 
+LIMITATIONS:
+The limitations of this project is that it cannot handle infinite scrolling
+websites, and it cannot reach into iframes. As of May 6, 2022 it also can't
+deal with javascript intensive websites, but I'm working on that and hopefully
+it will be completed by the due date.
 
 To start the virtual environment:
 source pyapi/bin/activate
@@ -27,6 +32,8 @@ installed the required dependencies, but since the virtual environment has been
 uploaded as well, the dependencies should come with it. 
 
 Check requirements.txt for the necessary libraries to run this API.
+To install packages from requirements.txt run the following command
+pip3 install -r requirements.txt
 
 A few other things to note:
 ignore scrape.py, I wanted to track it's history but it was really just for testing
