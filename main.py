@@ -57,25 +57,29 @@ def form_post(
     # note this will always return false while I'm working on the database part. 
     q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
     # DEBUG PRINT STATEMENTS
-    print("full query: ", prev_query)
-    print("query: ", q)
-    print("Prevquery.link: ", prev_query.link)
-    print("prevQuery.string: ", prev_query.qstring)
+    # print("full query: ", prev_query)
+    # print("query: ", q)
+    # print("Prevquery.link: ", prev_query.link)
+    # print("prevQuery.string: ", prev_query.qstring)
     # handles the case where new 
     if q == []:
         result = find_string(prev_query.link, prev_query.qstring)
         # handles the case where the queried string is not found.
         result = "Not found" if result == "" else result
         prev_query.tag = result
-        print("I'm running again")
         x = services.create_prev_query(db=db, prev_query=prev_query)
     
     # this will return a tag from the database if the query returned a non-empty list
+    count = 0
     for que in q:
         if (que.link == prev_query.link and que.qstring == prev_query.qstring):
             result = que.tag
-    # still need to handle the case where the link is the same but the qstring isn't
-
+        count += 1
+    # This handles the case where link is same but qstring is different (and not in db)
+    if (count == q.len()):
+        result = find_string(prev_query.link, prev_query.qstring)
+        prev_query.tag = result
+        x = services.create_prev_query(db=db, prev_query=prev_query)
 
     # this returns the new value of result to the end user.
     return templates.TemplateResponse('form.html', context= {"request":request, 'result': result})
@@ -88,6 +92,6 @@ def form_post(request: Request):
 
 
 # temporarily commented out
-# @app.get('/')
-# def read_root(request:Request):
-#     return templates.TemplateResponse("landing.html", context={'request':request})
+@app.get('/')
+def read_root(request:Request):
+    return templates.TemplateResponse("landing.html", context={'request':request})
