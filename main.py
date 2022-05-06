@@ -25,7 +25,7 @@ def find_string(link, string):
     # preliminary work
     html_string = requests.get(link).text
     # start the search
-    occurence_index = html_string.lower().rfind(string.lower())
+    occurence_index = html_string.lower().rfind(string)
     start_index = occurence_index
     end_index = occurence_index
     start = html_string[start_index]
@@ -54,6 +54,9 @@ def form_post(
     db: _orm.Session=fastapi.Depends(services.get_db)):
     # Empty by default
     result = ""
+    # set all entered paramaters as lowercase for consistency when searching/storing in the db
+    prev_query.link = prev_query.link.lower()
+    prev_query.qstring = prev_query.qstring.lower()
     # note this will always return false while I'm working on the database part. 
     q = services.get_queries_by_link(db=db, link=prev_query.link) # named q for query
     # DEBUG PRINT STATEMENTS
@@ -65,19 +68,22 @@ def form_post(
     if q == []:
         result = find_string(prev_query.link, prev_query.qstring)
         # handles the case where the queried string is not found.
-        result = "Not found" if result == "" else result
+        result = "not found" if result == "" else result
         prev_query.tag = result
         x = services.create_prev_query(db=db, prev_query=prev_query)
     
     # this will return a tag from the database if the query returned a non-empty list
     count = 0
     for que in q:
-        if (que.link == prev_query.link and que.qstring == prev_query.qstring):
+        if (que.link.lower() == prev_query.link and que.qstring == prev_query.qstring):
+            print("grabbed from db")
             result = que.tag
+            break
         count += 1
     # This handles the case where link is same but qstring is different (and not in db)
-    if (count == q.len()):
+    if (count == len(q)):
         result = find_string(prev_query.link, prev_query.qstring)
+        result = "not found" if result == "" else result
         prev_query.tag = result
         x = services.create_prev_query(db=db, prev_query=prev_query)
 
