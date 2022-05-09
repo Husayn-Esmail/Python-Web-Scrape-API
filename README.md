@@ -1,3 +1,13 @@
+###[REMARK]: This is the first version, it houses most of the commits, 
+the second version is here:
+https://github.com/Husayn-Esmail/CleanCodePythonWebScrapeAPI
+The second version is the best version and has changes that are not in this 
+repository and that do affect functionality. It was split into two versions
+because I was unhappy with the way I wrote what was in this respository in
+regards to variable names and documentation. That being said, I usually don't
+do this, it just happened to work out better with the second repository and
+I am much happier with the result.
+
 This API is supposed to return the HTML element that contains a given text
 string on a given web page. The API has an endpoint that takes the URL and
 text search string as arguments and stores them in a database.
