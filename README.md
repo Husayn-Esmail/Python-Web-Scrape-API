@@ -1,4 +1,6 @@
-###[REMARK]: This is the first version, it houses most of the commits, 
+# Python Web Scrape API
+
+### [REMARK]: This is the first version, it houses most of the commits, 
 the second version is here:
 https://github.com/Husayn-Esmail/CleanCodePythonWebScrapeAPI
 The second version is the best version and has changes that are not in this 
@@ -51,14 +53,14 @@ the scraping functionality in isolation. Also ignore crud.py, it is not being us
 and was a part of a previous attempt.
 
 Explanation of other files:
-database.py holds the code which runs the database
-main.py houses all the main functionality including the app and endpoints
-models.py holds python representations of the table in the database
-schemas.py holds the code that validates type before information is entered to database
-services.py is the gateway between main.py and the database
-tagselect.db is the database
-templates is a folder holding the html for the api endpoints
-form.html the code for the api interface 
-landing.html is the code for the root path
-static holds css files
-stylesheet.css has styles for form.html
+database.py holds the code which runs the database <br>
+main.py houses all the main functionality including the app and endpoints <br>
+models.py holds python representations of the table in the database <br>
+schemas.py holds the code that validates type before information is entered to database<br>
+services.py is the gateway between main.py and the database <br>
+tagselect.db is the database <br>
+templates is a folder holding the html for the api endpoints <br>
+form.html the code for the api interface <br>
+landing.html is the code for the root path <br>
+static holds css files <br>
+stylesheet.css has styles for form.html <br>
